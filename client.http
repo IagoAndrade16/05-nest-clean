@@ -18,6 +18,5 @@ Content-Type: application/json
 
 {
   "email": "email@email.com", 
-  "name": "name",
   "password": "password"
 }

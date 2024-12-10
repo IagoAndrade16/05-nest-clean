@@ -17,6 +17,12 @@
     "strictBindCallApply": false,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "types": [
+      "vitest/globals"
+    ]
   }
 }

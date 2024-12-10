@@ -31,6 +31,5 @@ Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMTZkNTcyN
 
 {
   "title": "title",
-  "description": "description",
-  "tags": ["tag1", "tag2"]
+  "content": "conteudo da pergunta"
 }

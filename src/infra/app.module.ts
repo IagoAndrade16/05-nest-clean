@@ -5,9 +5,13 @@ import { AuthModule } from './authentication/auth.module';
 import { HttpModule } from './http/http.module';
 
 @Module({
-  imports: [ConfigModule.forRoot({
-    validate: (env) => envSchema.parse(env),
-    isGlobal: true,
-  }), AuthModule, HttpModule],
+  imports: [
+    ConfigModule.forRoot({
+      validate: (env) => envSchema.parse(env),
+      isGlobal: true,
+    }), 
+    AuthModule, 
+    HttpModule
+  ],
 })
 export class AppModule {}

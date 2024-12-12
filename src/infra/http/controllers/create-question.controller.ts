@@ -5,6 +5,7 @@ import { UserPayload } from "@/infra/authentication/jwt.strategy";
 import { ZodValidationPipe } from "@/infra/http/pipes/zod-validation-pipe";
 import { z } from "zod";
 import { PrismaService } from "@/infra/database/prisma/prisma.service";
+import { CreateQuestionUseCase } from "@/domain/forum/application/usecases/create-question";
 
 const createQuestionBodySchema = z.object({
   title: z.string(),
@@ -17,7 +18,7 @@ type CreateQuestionBodySchema = z.infer<typeof createQuestionBodySchema>
 @UseGuards(JwtAuthGuard)
 export class CreateQuestionController {
   constructor(
-    private prismaService: PrismaService
+    private createQuestion: CreateQuestionUseCase
   ) {}
   
   @Post()
@@ -29,24 +30,11 @@ export class CreateQuestionController {
   ) {
     const { title, content } = body 
 
-    await this.prismaService.question.create({
-      data: {
-        title,
-        slug: this.convertTitleToSlug(title),
-        content,
-        authorId: user.sub
-      }
+    await this.createQuestion.execute({
+      attachmentsIds: [],
+      authorId: user.sub,
+      content,
+      title
     })
-  }
-
-  private convertTitleToSlug(title: string): string {
-    return title
-      .normalize('NFD') // Normalize the string to decompose combined characters
-      .replace(/[\u0300-\u036f]/g, '') // Remove diacritical marks
-      .toLowerCase() // Convert to lowercase
-      .replace(/[^a-z0-9 ]/g, '') // Remove invalid characters
-      .replace(/\s+/g, '-') // Replace spaces with hyphens
-      .replace(/-+/g, '-') // Replace multiple hyphens with a single hyphen
-      .replace(/^-|-$/g, ''); // Remove leading and trailing hyphens
   }
 }

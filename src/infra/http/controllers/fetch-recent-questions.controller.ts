@@ -6,6 +6,7 @@ import { ZodValidationPipe } from "@/infra/http/pipes/zod-validation-pipe";
 import { z } from "zod";
 import { PrismaService } from "@/infra/database/prisma/prisma.service";
 import { FetchRecentQuestionsUseCase } from "@/domain/forum/application/usecases/fetch-recent-questions";
+import { QuestionPresenter } from "../presenters/question-presenter";
 
 const pageQueryParamSchema = z.string().optional().default('1').transform(Number).pipe(
   z.number().min(1)
@@ -29,12 +30,17 @@ export class FetchRecentQuestionsController {
     @CurrentUser() user: UserPayload,
     @Query('page', queryValidationPipe) page: PageQueryParamSchema
   ) {
-    const questions = await this.fetchRecentQuestions.execute({
+    const result = await this.fetchRecentQuestions.execute({
       page,
     })
 
+    if(result.isLeft()) {
+      throw new Error('Failed to fetch recent questions')
+    }
+
+    const { questions } = result.value
     return {
-      questions,
+      questions: questions.map(QuestionPresenter.toHTTP),
     }
   }
 }

@@ -19,7 +19,6 @@ const queryValidationPipe = new ZodValidationPipe(
 )
 
 @Controller('/questions')
-@UseGuards(JwtAuthGuard)
 export class FetchRecentQuestionsController {
   constructor(
     private fetchRecentQuestions: FetchRecentQuestionsUseCase

@@ -9,10 +9,17 @@ import { FetchRecentQuestionsUseCase } from "@/domain/forum/application/usecases
 import { RegisterStudentUseCase } from "@/domain/forum/application/usecases/register-student";
 import { AuthenticateStudentUseCase } from "@/domain/forum/application/usecases/authenticate-student";
 import { CryptographyModule } from "../cryptography/cryptography.module";
+import { APP_GUARD } from "@nestjs/core";
+import { JwtAuthGuard } from "../authentication/jwt-auth.guard";
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
   controllers: [CreateAccountController, AuthenticateController, CreateQuestionController, FetchRecentQuestionsController],
-  providers: [CreateQuestionUseCase, FetchRecentQuestionsUseCase, RegisterStudentUseCase, AuthenticateStudentUseCase],
+  providers: [
+    CreateQuestionUseCase, 
+    FetchRecentQuestionsUseCase, 
+    RegisterStudentUseCase, 
+    AuthenticateStudentUseCase
+  ],
 })
 export class HttpModule {}

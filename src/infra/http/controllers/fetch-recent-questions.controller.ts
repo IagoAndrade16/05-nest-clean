@@ -5,6 +5,7 @@ import { UserPayload } from "@/infra/authentication/jwt.strategy";
 import { ZodValidationPipe } from "@/infra/http/pipes/zod-validation-pipe";
 import { z } from "zod";
 import { PrismaService } from "@/infra/database/prisma/prisma.service";
+import { FetchRecentQuestionsUseCase } from "@/domain/forum/application/usecases/fetch-recent-questions";
 
 const pageQueryParamSchema = z.string().optional().default('1').transform(Number).pipe(
   z.number().min(1)
@@ -20,7 +21,7 @@ const queryValidationPipe = new ZodValidationPipe(
 @UseGuards(JwtAuthGuard)
 export class FetchRecentQuestionsController {
   constructor(
-    private prismaService: PrismaService
+    private fetchRecentQuestions: FetchRecentQuestionsUseCase
   ) {}
   
   @Get()
@@ -28,12 +29,8 @@ export class FetchRecentQuestionsController {
     @CurrentUser() user: UserPayload,
     @Query('page', queryValidationPipe) page: PageQueryParamSchema
   ) {
-    const questions = await this.prismaService.question.findMany({
-      take: 20,
-      skip: (page - 1) * 20,
-      orderBy: {
-        createdAt: 'desc'
-      },
+    const questions = await this.fetchRecentQuestions.execute({
+      page,
     })
 
     return {

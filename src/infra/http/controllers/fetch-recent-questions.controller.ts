@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Get, Post, Query, UseGuards } from "@nestjs/common";
 import { CurrentUser } from "@/infra/authentication/current-user-decorator";
 import { JwtAuthGuard } from "@/infra/authentication/jwt-auth.guard";
 import { UserPayload } from "@/infra/authentication/jwt.strategy";
@@ -34,8 +34,8 @@ export class FetchRecentQuestionsController {
       page,
     })
 
-    if(result.isLeft()) {
-      throw new Error('Failed to fetch recent questions')
+    if (result.isLeft()) {
+      throw new BadRequestException()
     }
 
     const { questions } = result.value

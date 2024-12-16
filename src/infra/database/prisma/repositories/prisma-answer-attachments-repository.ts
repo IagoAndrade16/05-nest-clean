@@ -2,7 +2,9 @@ import { AnswerAttachmentsRepository } from "@/domain/forum/application/reposito
 import { AnswerAttachment } from "@/domain/forum/enterprise/entities/answer-attachment";
 import { PrismaService } from "../prisma.service";
 import { PrismaAnswerAttachmentMapper } from "../mappers/prisma-answer-attachment-mapper";
+import { Injectable } from "@nestjs/common";
 
+@Injectable()
 export class PrismaAnswerAttachmentsRepository implements AnswerAttachmentsRepository {
   constructor(private prisma: PrismaService) {}
   

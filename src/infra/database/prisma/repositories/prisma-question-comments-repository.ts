@@ -3,7 +3,9 @@ import { QuestionCommentsRepository } from "@/domain/forum/application/repositor
 import { QuestionComment } from "@/domain/forum/enterprise/entities/question-comment";
 import { PrismaService } from "../prisma.service";
 import { PrismaQuestionCommentMapper } from "../mappers/prisma-question-comment-mapper";
+import { Injectable } from "@nestjs/common";
 
+@Injectable()
 export class PrismaQuestionCommentsRepository implements QuestionCommentsRepository {
   constructor(private prisma: PrismaService) {}
 

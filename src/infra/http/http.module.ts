@@ -21,10 +21,16 @@ import { EditAnswerUseCase } from "@/domain/forum/application/usecases/edit-answ
 import { EditAnswerController } from "./controllers/edit-answer.controller";
 import { DeleteAnswerUseCase } from "@/domain/forum/application/usecases/delete-answer";
 import { DeleteAnswerController } from "./controllers/delete-answer.controller";
+import { FetchQuestionAnswersUseCase } from "@/domain/forum/application/usecases/fetch-question-answers";
+import { FetchQuestionAnswersController } from "./controllers/fetch-question-answers.controller";
+import { ChooseQuestionBestAnswerUseCase } from "@/domain/forum/application/usecases/choose-question-best-answer";
+import { ChooseQuestionBestAnswerController } from "./controllers/choose-question-best-answer.controller";
+import { CommentOnQuestionController } from "./controllers/comment-on-question.controller";
+import { CommentOnQuestionUseCase } from "@/domain/forum/application/usecases/comment-on-question";
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
-  controllers: [CreateAccountController, AuthenticateController, CreateQuestionController, FetchRecentQuestionsController, GetQuestionBySlugController, EditQuestionController, DeleteQuestionController, AnswerQuestionController, EditAnswerController, DeleteAnswerController],
+  controllers: [CreateAccountController, AuthenticateController, CreateQuestionController, FetchRecentQuestionsController, GetQuestionBySlugController, EditQuestionController, DeleteQuestionController, AnswerQuestionController, EditAnswerController, DeleteAnswerController, FetchQuestionAnswersController, ChooseQuestionBestAnswerController, CommentOnQuestionController],
   providers: [
     CreateQuestionUseCase, 
     FetchRecentQuestionsUseCase, 
@@ -35,7 +41,10 @@ import { DeleteAnswerController } from "./controllers/delete-answer.controller";
     DeleteQuestionUseCase,
     AnswerQuestionUseCase,
     EditAnswerUseCase,
-    DeleteAnswerUseCase
+    DeleteAnswerUseCase,
+    FetchQuestionAnswersUseCase,
+    ChooseQuestionBestAnswerUseCase,
+    CommentOnQuestionUseCase
   ],
 })
 export class HttpModule {}

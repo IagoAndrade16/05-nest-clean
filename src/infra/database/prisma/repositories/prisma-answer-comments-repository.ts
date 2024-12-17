@@ -1,9 +1,10 @@
 import { AnswerCommentsRepository } from "@/domain/forum/application/repositories/answer-comments-repository";
 import { AnswerComment } from "@/domain/forum/enterprise/entities/answer-comment";
-import { PrismaService } from "../prisma.service";
-import { Prisma } from "@prisma/client";
 import { PrismaAnswerCommentMapper } from "../mappers/prisma-answer-comment-mapper";
+import { PrismaService } from "../prisma.service";
+import { Injectable } from "@nestjs/common";
 
+@Injectable()
 export class PrismaAnswerCommentsRepository implements AnswerCommentsRepository {
   constructor(private prisma: PrismaService) {}
   

@@ -42,7 +42,7 @@ describe('fetch recent answers', () => {
 
     const result = await sut.execute({
       page: 1,
-      questionId: new UniqueEntityID('1'),
+      questionId: '1',
     })
 
     expect(result.isRight()).toBeTruthy()
@@ -60,7 +60,7 @@ describe('fetch recent answers', () => {
 
     const result = await sut.execute({
       page: 2,
-      questionId: new UniqueEntityID('1'),
+      questionId: '1',
     })
 
     expect(result.isRight()).toBeTruthy()

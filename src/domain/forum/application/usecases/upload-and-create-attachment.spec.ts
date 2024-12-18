@@ -18,7 +18,7 @@ describe('Upload and create attachment', () => {
     const result = await sut.execute({
       body: Buffer.from(''),
       fileName: 'profile.png',
-      fileType: 'png',
+      fileType: 'image/png',
     })
 
     expect(result.isRight()).toBeTruthy()

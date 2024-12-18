@@ -3,6 +3,7 @@ import { PaginationParams } from '@/core/repositories/pagination-params'
 import { QuestionAttachmentsRepository } from '@/domain/forum/application/repositories/question-attachments-repository'
 import { QuestionsRepository } from '@/domain/forum/application/repositories/questions-repository'
 import { Question } from '@/domain/forum/enterprise/entities/question'
+import { aw } from 'vitest/dist/chunks/reporters.D7Jzd9GS'
 
 export class InMemoryQuestionsRepository implements QuestionsRepository {
   public questions: Question[] = []
@@ -13,6 +14,7 @@ export class InMemoryQuestionsRepository implements QuestionsRepository {
 
   async create(question: Question): Promise<void> {
     this.questions.push(question)
+    await this.questionAttachmentsRepository.createMany(question.attachments.getItems())
 
     DomainEvents.dispatchEventsForAggregate(question.id)
   }
@@ -42,6 +44,14 @@ export class InMemoryQuestionsRepository implements QuestionsRepository {
   async save(question: Question): Promise<void> {
     this.questions = this.questions.map((q) =>
       q.id.toValue() === question.id.toValue() ? question : q,
+    )
+
+    await this.questionAttachmentsRepository.createMany(
+      question.attachments.getNewItems(),
+    )
+
+    await this.questionAttachmentsRepository.deleteMany(
+      question.attachments.getRemovedItems(),
     )
 
     DomainEvents.dispatchEventsForAggregate(question.id)

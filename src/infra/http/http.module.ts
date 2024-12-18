@@ -39,6 +39,7 @@ import { FetchQuestionCommentsController } from "./controllers/fetch-question-co
 import { FetchRecentQuestionsController } from "./controllers/fetch-recent-questions.controller";
 import { GetQuestionBySlugController } from "./controllers/get-question-by-slug.controller";
 import { UploadAttachmentController } from "./controllers/upload-attachment.controller";
+import { UploadAndCreateAttachmentUseCase } from "@/domain/forum/application/usecases/upload-and-create-attachment";
 
 @Module({
   imports: [DatabaseModule, CryptographyModule, StorageModule],
@@ -61,7 +62,7 @@ import { UploadAttachmentController } from "./controllers/upload-attachment.cont
     DeleteAnswerCommentController,
     FetchQuestionCommentsController,
     FetchAnswerCommentsController,
-    UploadAttachmentController
+    UploadAttachmentController,
   ],
   providers: [
     CreateQuestionUseCase, 
@@ -81,7 +82,8 @@ import { UploadAttachmentController } from "./controllers/upload-attachment.cont
     CommentOnAnswerUseCase,
     DeleteAnswerCommentUseCase,
     FetchQuestionCommentsUseCase,
-    FetchAnswerCommentsUseCase
+    FetchAnswerCommentsUseCase,
+    UploadAndCreateAttachmentUseCase
   ],
 })
 export class HttpModule {}

@@ -6,7 +6,7 @@ let inMemoryStudentsRepository: InMemoryStudentsRepository
 let fakeHasher: FakeHasher
 let sut: RegisterStudentUseCase
 
-describe('create question', () => {
+describe('Register student', () => {
   beforeEach(() => {
     inMemoryStudentsRepository =
       new InMemoryStudentsRepository()

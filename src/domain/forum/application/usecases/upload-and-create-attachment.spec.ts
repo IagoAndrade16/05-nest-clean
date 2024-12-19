@@ -14,7 +14,7 @@ describe('Upload and create attachment', () => {
     sut = new UploadAndCreateAttachmentUseCase(inMemoryAttachmentsRepository, uploader)
   })
 
-  it.only('should be able to create an attachment', async () => {
+  it('should be able to create an attachment', async () => {
     const result = await sut.execute({
       body: Buffer.from(''),
       fileName: 'profile.png',

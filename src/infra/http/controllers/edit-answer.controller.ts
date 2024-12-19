@@ -7,6 +7,7 @@ import { z } from "zod";
 
 const editAnswerBodySchema = z.object({
   content: z.string(),
+  attachments: z.array(z.string().uuid()).default([])
 })
 
 type EditAnswerBodySchema = z.infer<typeof editAnswerBodySchema>
@@ -24,13 +25,13 @@ export class EditAnswerController {
     @Param('id') id: string,
     @CurrentUser() user: UserPayload
   ) {
-    const { content } = body 
+    const { content, attachments } = body 
 
     const result = await this.editAnswer.execute({
       authorId: user.sub,
       content,
       answerId: id,
-      attachmentsIds: [],
+      attachmentsIds: attachments,
     })
 
     if (result.isLeft()) {

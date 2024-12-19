@@ -37,6 +37,7 @@ export class AnswerQuestionUseCase {
         answerId: answer.id,
       })
     })
+    
     answer.attachments = new AnswerAttachmentList(answerAttachments)
 
     await this.answersRepository.create(answer)

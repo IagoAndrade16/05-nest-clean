@@ -5,6 +5,7 @@ import { INestApplication } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { Test } from '@nestjs/testing';
 import request from 'supertest';
+import { AttachmentFactory } from "test/factories/make-attachment";
 import { StudentFactory } from "test/factories/make-student";
 
 describe('Create question (E2E)', () => {
@@ -12,17 +13,19 @@ describe('Create question (E2E)', () => {
   let jwt: JwtService
   let prisma: PrismaService
   let studentFactory: StudentFactory
+  let attachmentFactory: AttachmentFactory
   beforeAll(async () => {
 
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, DatabaseModule],
-      providers: [StudentFactory]
+      providers: [StudentFactory, AttachmentFactory]
     }).compile();
 
     app = moduleRef.createNestApplication();
     prisma = moduleRef.get(PrismaService)
     jwt = moduleRef.get<JwtService>(JwtService)
     studentFactory = moduleRef.get(StudentFactory)
+    attachmentFactory = moduleRef.get(AttachmentFactory)
 
     await app.init();
   });
@@ -31,12 +34,17 @@ describe('Create question (E2E)', () => {
     const user = await studentFactory.makePrismaStudent({})
 
     const access_token = jwt.sign({ sub: user.id.toString() })
+
+    const attachment1 = await attachmentFactory.makePrismaAttachment({})
+    const attachment2 = await attachmentFactory.makePrismaAttachment({})
+
     const res = await request(app.getHttpServer())
       .post('/questions')
       .set('Authorization', `Bearer ${access_token}`)
       .send({
         title: 'title',
         content: 'content',
+        attachments: [attachment1.id.toString(), attachment2.id.toString()]
       })
 
     expect(res.status).toBe(201)
@@ -48,5 +56,13 @@ describe('Create question (E2E)', () => {
     })
 
     expect(questionOnDatabase).toBeTruthy()
+
+    const attachmentsOnDatabase = await prisma.attachment.findMany({
+      where: {
+        questionId: questionOnDatabase?.id
+      }
+    })
+
+    expect(attachmentsOnDatabase).toHaveLength(2)
   })
 })

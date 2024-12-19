@@ -1,4 +1,5 @@
 import { Attachment } from "@/domain/forum/enterprise/entities/attachment";
+import { QuestionAttachment } from "@/domain/forum/enterprise/entities/question-attachment";
 import { Prisma } from '@prisma/client';
 
 export class PrismaAttachmentMapper {

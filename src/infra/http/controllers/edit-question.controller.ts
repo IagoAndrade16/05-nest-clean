@@ -8,6 +8,7 @@ import { z } from "zod";
 const editQuestionBodySchema = z.object({
   title: z.string(),
   content: z.string(),
+  attachments: z.array(z.string())
 })
 
 type EditQuestionBodySchema = z.infer<typeof editQuestionBodySchema>
@@ -25,14 +26,14 @@ export class EditQuestionController {
     @Param('id') id: string,
     @CurrentUser() user: UserPayload
   ) {
-    const { title, content } = body 
+    const { title, content, attachments } = body 
 
     const result = await this.editQuestion.execute({
       authorId: user.sub,
       content,
       title,
       questionId: id,
-      attachmentsIds: []
+      attachmentsIds: attachments
     })
 
     if (result.isLeft()) {

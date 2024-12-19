@@ -1,15 +1,14 @@
-import { BadRequestException, Body, Controller, Post, UseGuards } from "@nestjs/common";
+import { CreateQuestionUseCase } from "@/domain/forum/application/usecases/create-question";
 import { CurrentUser } from "@/infra/authentication/current-user-decorator";
-import { JwtAuthGuard } from "@/infra/authentication/jwt-auth.guard";
 import { UserPayload } from "@/infra/authentication/jwt.strategy";
 import { ZodValidationPipe } from "@/infra/http/pipes/zod-validation-pipe";
+import { BadRequestException, Body, Controller, Post } from "@nestjs/common";
 import { z } from "zod";
-import { PrismaService } from "@/infra/database/prisma/prisma.service";
-import { CreateQuestionUseCase } from "@/domain/forum/application/usecases/create-question";
 
 const createQuestionBodySchema = z.object({
   title: z.string(),
   content: z.string(),
+  attachments: z.array(z.string().uuid())
 })
 
 type CreateQuestionBodySchema = z.infer<typeof createQuestionBodySchema>
@@ -27,10 +26,10 @@ export class CreateQuestionController {
 
     @CurrentUser() user: UserPayload
   ) {
-    const { title, content } = body 
+    const { title, content, attachments } = body 
 
     const result = await this.createQuestion.execute({
-      attachmentsIds: [],
+      attachmentsIds: attachments,
       authorId: user.sub,
       content,
       title

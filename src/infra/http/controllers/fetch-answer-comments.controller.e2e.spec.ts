@@ -34,7 +34,9 @@ describe('Fetch recent answers (E2E)', () => {
   });
 
   test('[GET] /answers/:answerId/comments', async () => {
-    const user = await studentFactory.makePrismaStudent({})
+    const user = await studentFactory.makePrismaStudent({
+      name: 'John Doe',
+    })
 
     const access_token = jwt.sign({ sub: user.id.toString() })
 
@@ -52,6 +54,17 @@ describe('Fetch recent answers (E2E)', () => {
       .send()
 
     expect(res.status).toBe(200)
-    expect(res.body.answerComments).toHaveLength(2)
+    expect(res.body.comments).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          content: 'Comment 1',
+          authorName: 'John Doe',
+        }),
+        expect.objectContaining({
+          content: 'Comment 2',
+          authorName: 'John Doe',
+        })
+      ])
+    )
   })
 })
